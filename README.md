@@ -1,2 +1,1 @@
-# App Academy Homeworks
-## Author: Joseph Deng
+# App Academy Classwork
