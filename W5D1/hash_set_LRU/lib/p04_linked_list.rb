@@ -46,9 +46,25 @@ class LinkedList
   end
 
   def get(key)
+    runner = @head.next
+    while runner != @tail 
+      if key == runner.key 
+        return runner.val
+      end
+      runner = runner.next
+    end
+    nil 
   end
 
   def include?(key)
+    runner = @head.next
+    while runner != @tail 
+      if key == runner.key 
+        return true
+      end
+      runner = runner.next
+    end
+    false 
   end
 
   def append(key, val)
@@ -62,7 +78,7 @@ class LinkedList
 
   def update(key, val)
     runner = @head.next
-    while runner.next != @tail 
+    while runner != @tail 
       if key == runner.key 
         runner.val = val 
         return 
@@ -72,14 +88,24 @@ class LinkedList
   end
 
   def remove(key)
+    runner = @head.next
+    while runner != @tail 
+      if key == runner.key 
+        pre_node = runner.prev 
+        next_node = runner.next 
+        pre_node.next = next_node
+        next_node.prev = pre_node
+      end
+      runner = runner.next
+    end
   end
 
   def each
-    runner = @head.next
-    while runner.next != @tail 
-      yield(runner.val)
-      runner = runner.next
-    end
+    # runner = @head.next
+    # while runner.next != @tail 
+    #   yield(runner.val)
+    #   runner = runner.next
+    # end
   end
 
   # uncomment when you have `each` working and `Enumerable` included
