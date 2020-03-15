@@ -61,11 +61,11 @@ def scandinavia
   # 'Sweden'
   execute(<<-SQL)
     SELECT 
-    name, population 
+      name, population 
     FROM 
-    countries
+      countries
     WHERE
-    name in ('Denmark', 'Finland', 'Norway','Sweden')
+      name in ('Denmark', 'Finland', 'Norway','Sweden')
   SQL
 end
 
@@ -73,11 +73,11 @@ def starts_with_g
   # Show each country that begins with the letter G
   execute(<<-SQL)
   SELECT
-  name
+    name
   FROM
-  countries
+    countries
   WHERE
-  name LIKE 'G%'
+    name LIKE 'G%'
   SQL
 end
 
