@@ -48,6 +48,10 @@ end
 def blur_songs
   # Select the `song` for each `track` on the album `Blur`.
   execute(<<-SQL)
+  SELECT song FROM tracks
+  JOIN albums
+  ON tracks.album = asin
+  WHERE title = 'Blur'
   SQL
 end
 
@@ -56,6 +60,13 @@ def heart_tracks
   # the word 'Heart' (albums with no such tracks need not be shown). Order first by
   # the number of such tracks, then by album title.
   execute(<<-SQL)
+  SELECT title, COUNT(song)
+  FROM albums
+  JOIN tracks
+  ON tracks.album = asin
+  WHERE song LIKE '%Heart%'
+  GROUP BY title
+  ORDER BY COUNT(song) DESC, title
   SQL
 end
 
@@ -63,6 +74,11 @@ def title_tracks
   # A 'title track' has a `song` that is the same as its album's `title`. Select
   # the names of all the title tracks.
   execute(<<-SQL)
+  SELECT song 
+  FROM tracks
+  JOIN albums
+  ON tracks.album = asin
+  WHERE song = title
   SQL
 end
 
@@ -70,6 +86,9 @@ def eponymous_albums
   # An 'eponymous album' has a `title` that is the same as its recording
   # artist's name. Select the titles of all the eponymous albums.
   execute(<<-SQL)
+  SELECT title
+  FROM albums
+  WHERE title = artist
   SQL
 end
 
@@ -77,6 +96,12 @@ def song_title_counts
   # Select the song names that appear on more than two albums. Also select the
   # COUNT of times they show up.
   execute(<<-SQL)
+  SELECT song, COUNT(albums)
+  FROM albums
+  JOIN tracks
+  ON asin = tracks.album
+  GROUP BY song
+  HAVING COUNT(DISTINCT albums) > 2
   SQL
 end
 
@@ -85,6 +110,17 @@ def best_value
   # pence. Find the good value albums - show the title, the price and the number
   # of tracks.
   execute(<<-SQL)
+  SELECT 
+    title, 
+    price, 
+    COUNT(song)
+  FROM 
+    albums
+  JOIN 
+    tracks
+  ON tracks.album = asin
+  GROUP BY asin
+  HAVING price / COUNT(song) < 0.5
   SQL
 end
 
@@ -93,6 +129,12 @@ def top_track_counts
   # tracks. List the top 10 albums. Select both the album title and the track
   # count, and order by both track count and title (descending).
   execute(<<-SQL)
+  SELECT title, COUNT(song)
+  FROM albums
+  JOIN tracks ON tracks.album = asin
+  GROUP BY title
+  ORDER BY COUNT(song) DESC, title DESC
+  LIMIT 10
   SQL
 end
 
@@ -100,6 +142,14 @@ def rock_superstars
   # Select the artist who has recorded the most rock albums, as well as the
   # number of albums. HINT: use LIKE '%Rock%' in your query.
   execute(<<-SQL)
+  SELECT artist, COUNT( DISTINCT asin)
+  FROM albums
+  JOIN styles
+  ON asin = album
+  WHERE style LIKE '%Rock%' 
+  GROUP BY artist
+  ORDER BY COUNT(asin) DESC
+  LIMIT 1
   SQL
 end
 
