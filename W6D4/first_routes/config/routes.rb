@@ -25,7 +25,7 @@ Rails.application.routes.draw do
   resources :artworkshares, only: [ :create, :destroy ]
 
   resources :comments, only: [ :create, :destroy, :index ]
-  get '/comments/:user_id/comments', to: 'comments#index', 
+  get '/comments/:user_id/comments', to: 'comments#index'
 
   # finish the controller and nest comments route
 end

@@ -1,0 +1,2 @@
+module JustATestHelper
+end
