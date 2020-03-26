@@ -10,6 +10,7 @@
         </ul>
     <% end %>
 <% else %>
-    <p>Need to sign-in first!</p>
+    <a href="/users/new">Sign-Up</a>
+    <br>
     <a href="<%= new_session_url %>">Sign-In</a>
 <% end %>

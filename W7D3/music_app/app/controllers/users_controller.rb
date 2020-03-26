@@ -34,6 +34,16 @@ class UsersController < ApplicationController
         end
     end
 
+    def update
+        @user = User.find_by(id: params[:id])
+        if @user 
+            @user.update(user_params)
+            redirect_to users_url 
+        else
+            render :edit 
+        end
+    end
+
     def destroy
         @user = find_by(id: params[:id])
         @user.destroy
