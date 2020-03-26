@@ -1,0 +1,25 @@
+<% if type == :new %>
+    <% request_action = users_url %>
+    <h2>Create new user</h2>
+<% else %>
+    <% request_action = user_url(user) %>
+    <h2>Edit user</h2>
+<% end %>
+
+<form action="<%= request_action %>" method="POST">
+    <% if type == :edit %>
+        <input type="hidden" name="_method" value="PATCH">
+    <% end %>
+
+    <label>
+        Email
+        <input type="text" name="user[email]" value="<% user.email %>">
+    </label>
+
+    <% if type != :edit %>
+        Password
+        <input type="password" name="user[password]" value="">
+    <% end %>
+
+    <button type="submit">Submit</button>
+</form>

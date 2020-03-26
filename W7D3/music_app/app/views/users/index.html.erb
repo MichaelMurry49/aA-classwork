@@ -1,0 +1,15 @@
+<h2>All the users in the database!</h2>
+
+<% if logged_in? %>
+    <% @users.each do |user| %>
+        <ul>
+            <li>
+                Email: <%= user.email %> 
+                <button><a href="<%= edit_user_url(user) %>">Edit</a></button>
+            </li>
+        </ul>
+    <% end %>
+<% else %>
+    <p>Need to sign-in first!</p>
+    <a href="<%= new_session_url %>">Sign-In</a>
+<% end %>
