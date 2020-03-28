@@ -1,0 +1,33 @@
+ul.sections-nav {
+    display: flex;
+    justify-content: center;
+    font-family: $serif;
+    font-size: 12px;
+    font-weight: 500;
+    border-bottom: 1.5px solid $light-gray;
+}
+
+ul.sections-nav li {
+    padding: 15px;
+}
+
+ul.sections-nav li span:hover {
+    background-color: $light-gray;
+}
+
+ul.sections-nav li:last-of-type {
+    font-size: 10px;
+    align-self: flex-end;
+    margin-left: -26px;
+}
+
+// .all {
+//     font-size: 10px;
+
+// }
+
+
+// .all:hover {
+//     text-decoration: underline;
+//     background-color: white;
+// }
