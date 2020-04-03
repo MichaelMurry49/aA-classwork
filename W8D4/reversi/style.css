@@ -1,0 +1,86 @@
+body {
+    background-color: cadetblue;
+}
+
+.content {
+    display: flex;
+    justify-content: space-around;
+}
+
+.black h1{
+    color: black;
+    margin-top: 50px;
+}
+
+.white h1{
+    color: white;
+    margin-top: 50px;
+}
+
+h1 {
+    font-family: Georgia, 'Times New Roman', Times, serif;
+    text-align: center;
+    padding-top: 30px;
+    color: #fff;
+    font-weight: 700;
+    font-size: 50px;
+}
+
+h2 {
+    padding-left: 5px;
+    font-size: 30px;
+    font-family: sans-serif;
+    color: greenyellow;
+}
+
+h3 {
+    padding-left: 5px;
+    color: yellow;
+}
+
+.grid {
+    width: 658px;
+    height: 658px;
+    border: 6px solid #fff;
+    border-radius: 10px;
+}
+.g {
+    float: left;
+    width: 80px;
+    height: 80px;
+    background-color: green;
+    font-size:50px;
+    text-align:center;
+    border: 1px solid black;
+    /* display: table-cell; */
+    vertical-align:middle
+}
+.dg {
+    float: left;
+    width: 80px;
+    height: 80px;
+    background-color: forestgreen;;
+    font-size:50px;
+    text-align:center;
+    /* display: table-cell; */
+    border: 1px solid black;
+    vertical-align:middle;
+}
+
+.blk-disc {
+  display: inline-block;
+  margin-top: 4px;
+  height: 73px;
+  width: 73px;
+  background-color: #000;
+  border-radius: 50%;
+}
+
+.wht-disc {
+  display: inline-block;
+  margin-top: 4px;
+  height: 73px;
+  width: 73px;
+  background-color: #fff;
+  border-radius: 50%;
+}
