@@ -1,5 +1,5 @@
 body {
-    background-color: cadetblue;
+    background-color: rgb(19, 126, 55);
 }
 
 .content {
@@ -26,16 +26,22 @@ h1 {
     font-size: 50px;
 }
 
-h2 {
-    padding-left: 5px;
-    font-size: 30px;
-    font-family: sans-serif;
-    color: greenyellow;
+.header {
+    display: flex;
+    justify-content: center;
+}
+
+a {
+    text-decoration: none;
+}
+
+a h1:hover {
+    color: #000;
 }
 
 h3 {
-    padding-left: 5px;
-    color: yellow;
+    text-align: center;
+    color: gold;
 }
 
 .grid {
@@ -44,6 +50,7 @@ h3 {
     border: 6px solid #fff;
     border-radius: 10px;
 }
+
 .g {
     float: left;
     width: 80px;
@@ -52,9 +59,9 @@ h3 {
     font-size:50px;
     text-align:center;
     border: 1px solid black;
-    /* display: table-cell; */
     vertical-align:middle
 }
+
 .dg {
     float: left;
     width: 80px;
@@ -62,7 +69,6 @@ h3 {
     background-color: forestgreen;;
     font-size:50px;
     text-align:center;
-    /* display: table-cell; */
     border: 1px solid black;
     vertical-align:middle;
 }
@@ -74,6 +80,7 @@ h3 {
   width: 73px;
   background-color: #000;
   border-radius: 50%;
+  color: #fff;
 }
 
 .white-disc {
@@ -83,4 +90,13 @@ h3 {
   width: 73px;
   background-color: #fff;
   border-radius: 50%;
+  color: #000;
+}
+
+.score {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: auto;
+    font-size: 36px;
 }

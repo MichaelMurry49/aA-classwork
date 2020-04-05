@@ -175,16 +175,22 @@ Board.prototype.placePiece = function (pos, color) {
  * Prints a string representation of the Board to the console.
  */
 Board.prototype.print = function () {
+    let whiteScore = 0;
+    let blackScore = 0;
     for (var i = 0; i < 8; i++) {
         for (var j = 0; j < 8; j++) {
             let idNum = i * 8 + j;
             if (this.grid[i][j] !== undefined) {
+                if (this.grid[i][j].color === 'white') whiteScore++;
+                if (this.grid[i][j].color === 'black') blackScore++;
                 let span = document.getElementById(`pos${idNum}`).querySelector('span');
                 span.classList = "";
                 span.classList.add(`${this.grid[i][j].color}-disc`)
             }
         }
     }
+    document.querySelector('.white .score').innerHTML = whiteScore;
+    document.querySelector('.black .score').innerHTML = blackScore;
 };
 
 /**
@@ -232,7 +238,9 @@ function Game() {
  * Flips the current turn to the opposite color.
  */
 Game.prototype._flipTurn = function () {
+    document.querySelector(`.${this.turn}`).querySelector('.turn').innerHTML = "";
     this.turn = (this.turn == "black") ? "white" : "black";
+    document.querySelector(`.${this.turn}`).querySelector('.turn').innerHTML = "It's your turn!";
 };
 
 /**
@@ -253,12 +261,13 @@ Game.prototype.init = function(){
 
 Game.prototype.gameLoop = function() {
     let cellNum = parseInt(event.srcElement.id.slice(3));
-    if (this.board.placePiece([parseInt(cellNum / 8), cellNum % 8], this.turn));
+    if (this.board.placePiece([parseInt(cellNum / 8), cellNum % 8], this.turn)) {
         this.board.print();
+        this._flipTurn();
+    }   
     if (this.board.isOver()) {
         alert("The game is over!");
     } 
-    this._flipTurn();
     if (!this.board.hasMove(this.turn)) {
         this._flipTurn();
     } 
