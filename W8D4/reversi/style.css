@@ -67,7 +67,7 @@ h3 {
     vertical-align:middle;
 }
 
-.blk-disc {
+.black-disc {
   display: inline-block;
   margin-top: 4px;
   height: 73px;
@@ -76,7 +76,7 @@ h3 {
   border-radius: 50%;
 }
 
-.wht-disc {
+.white-disc {
   display: inline-block;
   margin-top: 4px;
   height: 73px;

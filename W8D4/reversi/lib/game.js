@@ -24,16 +24,19 @@ let rlInterface;
  * Creates a readline interface and starts the run loop.
  */
 Game.prototype.play = function () {
-  rlInterface = readline.createInterface({
-    input: process.stdin,
-    output: process.stdout,
-    terminal: false
-  });
+  // rlInterface = readline.createInterface({
+  //   input: process.stdin,
+  //   output: process.stdout,
+  //   terminal: false
+  // });
 
-  this.runLoop(function () {
-    rlInterface.close();
-    rlInterface = null;
-  });
+  // this.runLoop(function () {
+  //   rlInterface.close();
+  //   rlInterface = null;
+  // });
+  
+  const grid = document.querySelector('.grid');
+  // grid.addEventListener('click', () => alert('grid is clicked!'));
 };
 
 /**
