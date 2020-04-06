@@ -172,7 +172,7 @@ Board.prototype.placePiece = function (pos, color) {
 };
 
 /**
- * Prints a string representation of the Board to the console.
+ * Prints the Board to the browser.
  */
 Board.prototype.print = function () {
     let whiteScore = 0;
@@ -238,9 +238,26 @@ function Game() {
  * Flips the current turn to the opposite color.
  */
 Game.prototype._flipTurn = function () {
-    document.querySelector(`.${this.turn}`).querySelector('.turn').innerHTML = "";
-    this.turn = (this.turn == "black") ? "white" : "black";
-    document.querySelector(`.${this.turn}`).querySelector('.turn').innerHTML = "It's your turn!";
+    if (this.board.isOver()) {
+        this.board.print();
+        let bscore = Number(document.querySelector('.black .score').textContent);
+        let wscore = Number(document.querySelector('.white .score').textContent);
+        if (bscore === wscore) alert('Game over. Draw game!');
+        else {
+            let winner = bscore > wscore ? 'Black' : 'White';
+            alert(`Game over. ${winner} has won!`);
+        }
+    } else {
+        this.turn = (this.turn == "black") ? "white" : "black";
+        this.clearMessage();
+        if (this.turn === 'white') {
+            console.log('computer thinking')
+            setTimeout(this.computerMove.bind(this), 1500);
+        } else {
+            console.log('player thinking')
+            document.querySelector('.black').querySelector('.turn').innerHTML = "Player's turn";
+        }
+    }
 };
 
 /**
@@ -251,26 +268,47 @@ Game.prototype.play = function () {
     this.init();
 };
 
+Game.prototype.computerMove = function() {
+    let possibleMoves = this.board.validMoves('white');
+    console.log(possibleMoves);
+    if (possibleMoves.length === 0) {
+        console.log('computer passing...')
+        document.querySelector(`.${this.turn}`).querySelector('.turn').innerHTML = "Pass";
+        setTimeout(this._flipTurn.bind(this), 1500);
+    } else {
+        let move = Math.floor(Math.random() * possibleMoves.length);
+        console.log('computer moved...to pos ', move)
+        this.board.placePiece(possibleMoves[move], this.turn);
+        this.board.print();
+    }
+    this._flipTurn();
+};
+
 Game.prototype.init = function(){
     this.board.print();
     let cells = document.querySelectorAll('.cell');
     for (let i = 0; i < cells.length; i++) {
         cells[i].addEventListener('click', () => this.gameLoop());
     }
-}
+};
 
 Game.prototype.gameLoop = function() {
     let cellNum = parseInt(event.srcElement.id.slice(3));
-    if (this.board.placePiece([parseInt(cellNum / 8), cellNum % 8], this.turn)) {
+
+    if (!this.board.hasMove(this.turn)) {
+        console.log('player has no move')
+        document.querySelector(`.${this.turn}`).querySelector('.turn').innerHTML = "Pass";
+        setTimeout(this._flipTurn.bind(this), 1500);
+    } else if (this.turn === 'black' && this.board.placePiece([parseInt(cellNum / 8), cellNum % 8], this.turn)) {
+        console.log('player moved... computer turn')
         this.board.print();
         this._flipTurn();
     }   
-    if (this.board.isOver()) {
-        alert("The game is over!");
-    } 
-    if (!this.board.hasMove(this.turn)) {
-        this._flipTurn();
-    } 
+};
+
+Game.prototype.clearMessage = function() {
+    document.querySelector('.black').querySelector('.turn').innerHTML = "";
+    document.querySelector('.white').querySelector('.turn').innerHTML = "";
 }
 
 const game = new Game();
