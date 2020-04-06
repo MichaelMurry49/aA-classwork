@@ -253,12 +253,21 @@ Game.prototype._flipTurn = function() {
                 document.querySelector('.black').querySelector('.turn').innerHTML = "Pass";
                 setTimeout(this._flipTurn.bind(this), 2500);
             } else {
-                console.log('player thinking')
+                // this.renderHint();
+                console.log('player thinking');
                 document.querySelector('.black').querySelector('.turn').innerHTML = "Player's turn";
             }
         }
     }
 };
+
+Game.prototype.renderHint = function() {
+    let moves = this.board.validMoves('black');
+    for (move of moves) {
+        let divId = move[0] * 8 + move[1];
+        document.getElementById(`pos${divId}`).querySelector('span').classList.add('hint');
+    }
+}
 
 Game.prototype.displayGameover = function() {
     let bscore = Number(document.querySelector('.black .score').textContent);
@@ -289,7 +298,6 @@ Game.prototype.reset = function() {
  * Creates a readline interface and starts the run loop.
  */
 Game.prototype.play = function () {
-    const grid = document.querySelector('.grid');
     this.init();
 };
 
@@ -311,6 +319,7 @@ Game.prototype.computerMove = function() {
 
 Game.prototype.init = function(){
     this.board.print();
+    // this.renderHint();
     let cells = document.querySelectorAll('.cell');
     for (let i = 0; i < cells.length; i++) {
         cells[i].addEventListener('click', () => this.gameLoop());
@@ -319,7 +328,6 @@ Game.prototype.init = function(){
 
 Game.prototype.gameLoop = function() {
     let cellNum = parseInt(event.srcElement.id.slice(3));
-
     if (this.turn === 'black' && this.board.placePiece([parseInt(cellNum / 8), cellNum % 8], this.turn)) {
         console.log('player moved... computer turn')
         this.board.print();
