@@ -7,6 +7,20 @@ body {
     justify-content: space-around;
 }
 
+.hidden {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 20px;
+    display: none;
+}
+
+.hidden-message {
+    margin-right: 20px;
+    font-size: 24px;
+    font-weight: 700;
+    color: yellow;
+}
+
 .black h1{
     color: black;
     margin-top: 50px;
@@ -20,10 +34,14 @@ body {
 h1 {
     font-family: Georgia, 'Times New Roman', Times, serif;
     text-align: center;
-    padding-top: 30px;
+    padding-top: 20px;
     color: #fff;
     font-weight: 700;
     font-size: 50px;
+}
+
+.title {
+    margin-top: 0;
 }
 
 .header {
@@ -99,4 +117,11 @@ h3 {
     align-items: center;
     margin: auto;
     font-size: 36px;
+}
+
+footer {
+    margin-top: 20px;
+    padding-top: 20px;
+    height: 40px;
+    text-align: center;
 }

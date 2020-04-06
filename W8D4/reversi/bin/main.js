@@ -237,16 +237,10 @@ function Game() {
 /**
  * Flips the current turn to the opposite color.
  */
-Game.prototype._flipTurn = function () {
+Game.prototype._flipTurn = function() {
     if (this.board.isOver()) {
         this.board.print();
-        let bscore = Number(document.querySelector('.black .score').textContent);
-        let wscore = Number(document.querySelector('.white .score').textContent);
-        if (bscore === wscore) alert('Game over. Draw game!');
-        else {
-            let winner = bscore > wscore ? 'Black' : 'White';
-            alert(`Game over. ${winner} has won!`);
-        }
+        this.displayGameover();
     } else {
         this.turn = (this.turn == "black") ? "white" : "black";
         this.clearMessage();
@@ -257,7 +251,7 @@ Game.prototype._flipTurn = function () {
             if (!this.board.hasMove(this.turn)) {
                 console.log('player has no moves...')
                 document.querySelector('.black').querySelector('.turn').innerHTML = "Pass";
-                setTimeout(this._flipTurn.bind(this), 1500);
+                setTimeout(this._flipTurn.bind(this), 2500);
             } else {
                 console.log('player thinking')
                 document.querySelector('.black').querySelector('.turn').innerHTML = "Player's turn";
@@ -265,6 +259,31 @@ Game.prototype._flipTurn = function () {
         }
     }
 };
+
+Game.prototype.displayGameover = function() {
+    let bscore = Number(document.querySelector('.black .score').textContent);
+    let wscore = Number(document.querySelector('.white .score').textContent);
+    let message = document.querySelector('.hidden-message');
+    let resetBtn = document.querySelector('.hidden-btn');
+    if (bscore === wscore) message.innerHTML = 'Draw game!'
+    else if (bscore > wscore) {
+        message.innerHTML = 'You won the game!';
+    } else {
+        message.innerHTML = 'You lost the game.';
+    }
+    document.querySelector('.hidden').style.display = 'flex';
+    resetBtn.addEventListener('click', () => this.reset());
+};
+
+Game.prototype.reset = function() {
+    document.querySelector('.hidden').style.display = 'none';
+    this.turn = 'black';
+    let cells = document.querySelectorAll('.cell span');
+    for (cell of cells) cell.classList = ""; 
+    this.board = new Board();
+    this.board.print();
+    document.querySelector('.black').querySelector('.turn').innerHTML = "Player's turn";
+}
 
 /**
  * Creates a readline interface and starts the run loop.
