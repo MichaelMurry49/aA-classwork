@@ -252,10 +252,16 @@ Game.prototype._flipTurn = function () {
         this.clearMessage();
         if (this.turn === 'white') {
             console.log('computer thinking')
-            setTimeout(this.computerMove.bind(this), 1500);
+            setTimeout(this.computerMove.bind(this), 1000);
         } else {
-            console.log('player thinking')
-            document.querySelector('.black').querySelector('.turn').innerHTML = "Player's turn";
+            if (!this.board.hasMove(this.turn)) {
+                console.log('player has no moves...')
+                document.querySelector('.black').querySelector('.turn').innerHTML = "Pass";
+                setTimeout(this._flipTurn.bind(this), 1500);
+            } else {
+                console.log('player thinking')
+                document.querySelector('.black').querySelector('.turn').innerHTML = "Player's turn";
+            }
         }
     }
 };
@@ -273,15 +279,15 @@ Game.prototype.computerMove = function() {
     console.log(possibleMoves);
     if (possibleMoves.length === 0) {
         console.log('computer passing...')
-        document.querySelector(`.${this.turn}`).querySelector('.turn').innerHTML = "Pass";
+        document.querySelector('.white').querySelector('.turn').innerHTML = "Pass";
         setTimeout(this._flipTurn.bind(this), 1500);
     } else {
         let move = Math.floor(Math.random() * possibleMoves.length);
         console.log('computer moved...to pos ', move)
         this.board.placePiece(possibleMoves[move], this.turn);
         this.board.print();
+        this._flipTurn();
     }
-    this._flipTurn();
 };
 
 Game.prototype.init = function(){
@@ -295,11 +301,7 @@ Game.prototype.init = function(){
 Game.prototype.gameLoop = function() {
     let cellNum = parseInt(event.srcElement.id.slice(3));
 
-    if (!this.board.hasMove(this.turn)) {
-        console.log('player has no move')
-        document.querySelector(`.${this.turn}`).querySelector('.turn').innerHTML = "Pass";
-        setTimeout(this._flipTurn.bind(this), 1500);
-    } else if (this.turn === 'black' && this.board.placePiece([parseInt(cellNum / 8), cellNum % 8], this.turn)) {
+    if (this.turn === 'black' && this.board.placePiece([parseInt(cellNum / 8), cellNum % 8], this.turn)) {
         console.log('player moved... computer turn')
         this.board.print();
         this._flipTurn();
