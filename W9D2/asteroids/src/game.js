@@ -31,24 +31,45 @@ Game.prototype.moveObjects = function () {
     }
 }
 
-Game.prototype.wrap = function (pos) {
-    if (pos[0] > Game.DIM_X) {
-        pos[0] = 0;
-    }
-    else if (pos[0] < 0) {
-        pos[0] = Game.DIM_X;
-    }
-    if (pos[1] > Game.DIM_Y) {
-        pos[1] = 0;
-    }
-    else if (pos[1] < 0) {
-        pos[1] = Game.DIM_Y;
-    }
+Game.prototype.wrap = function(pos) {
+    if (pos[0] > Game.DIM_X) pos[0] = 0;
+    else if (pos[0] < 0) pos[0] = Game.DIM_X;
+    
+    if (pos[1] > Game.DIM_Y) pos[1] = 0;
+    else if (pos[1] < 0) pos[1] = Game.DIM_Y;
+    
     return pos;
+}
+
+Game.prototype.step = function() {
+    this.moveObjects();
+    let len = this.asteroids.length;
+    let removed = new Set();
+    for (let i = 0; i < len - 1; i++) {
+        for (let j = i + 1; j < len; j++) {
+            if (this.asteroids[i].isCollidedWith(this.asteroids[j])) {
+                removed.add(this.asteroids[i]);
+                removed.add(this.asteroids[j]);
+            }
+        }
+    }
+    removed = Array.from(removed);
+    for (let i = 0; i < removed.length; i++) {
+        this.remove(removed[i]);
+    }
+}
+
+Game.prototype.remove = function(asteroid) {
+    console.log(this.asteroids)
+    for (let i = 0; i < this.asteroids.length; i++) {
+        if (this.asteroids[i].pos[0] === asteroid.pos[0] 
+            && this.asteroids[i].pos[1] === asteroid.pos[1])
+            this.asteroids.splice(i, 1);
+    }
 }
 
 Game.DIM_X = 900;
 Game.DIM_Y = 600;
-Game.NUM_ASTEROIDS = 10;
+Game.NUM_ASTEROIDS = 8;
 
 module.exports = Game;
