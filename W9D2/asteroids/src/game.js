@@ -1,8 +1,11 @@
 const Asteroid = require("./asteroid.js");
+const Ship = require('./ship.js');
 
 function Game() {
     this.asteroids = [];
+    this.ship = new Ship( this);
     this.addAsteroids();
+    this.objects = this.allObjects();
 }
 
 Game.prototype.addAsteroids = function () {
@@ -22,13 +25,14 @@ Game.prototype.randomPosition = function () {
 
 Game.prototype.draw = function (ctx) {
     ctx.clearRect(0, 0, Game.DIM_X, Game.DIM_Y);
-    this.asteroids.forEach((asteroid) => asteroid.draw(ctx));
+    for (let object of this.objects) object.draw(ctx);
 }
 
 Game.prototype.moveObjects = function () {
-    for (let i = 0; i < this.asteroids.length; i++) {
-        this.asteroids[i].move();
-    }
+    // for (let i = 0; i < this.asteroids.length; i++) {
+    //     this.asteroids[i].move();
+    // }
+    for (let object of this.objects) object.move();
 }
 
 Game.prototype.wrap = function(pos) {
@@ -59,8 +63,24 @@ Game.prototype.step = function() {
     }
 }
 
+Game.prototype.checkCollisions = function() {
+    let len = this.objects.length;
+    let removed = new Set();
+    for (let i = 0; i < len - 1; i++) {
+        for (let j = i + 1; j < len; j++) {
+            if (this.objects[i].isCollidedWith(this.objects[j])) {
+                removed.add(this.objects[i]);
+                removed.add(this.objects[j]);
+            }
+        }
+    }
+    // removed = Array.from(removed);
+    // for (let i = 0; i < removed.length; i++) {
+    //     this.remove(removed[i]);
+    // }
+}
+
 Game.prototype.remove = function(asteroid) {
-    console.log(this.asteroids)
     for (let i = 0; i < this.asteroids.length; i++) {
         if (this.asteroids[i].pos[0] === asteroid.pos[0] 
             && this.asteroids[i].pos[1] === asteroid.pos[1])
@@ -68,8 +88,15 @@ Game.prototype.remove = function(asteroid) {
     }
 }
 
+Game.prototype.allObjects = function() {
+    let objects = [];
+    objects = objects.concat(this.asteroids);
+    objects.push(this.ship);
+    return objects;
+}
+
 Game.DIM_X = 900;
 Game.DIM_Y = 600;
-Game.NUM_ASTEROIDS = 8;
+Game.NUM_ASTEROIDS = 7;
 
 module.exports = Game;
