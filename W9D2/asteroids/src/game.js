@@ -1,11 +1,13 @@
 const Asteroid = require("./asteroid.js");
 const Ship = require('./ship.js');
+const Bullet = require('./bullet.js');
 
 function Game() {
     this.asteroids = [];
     this.ship = new Ship( this);
     this.addAsteroids();
     this.objects = this.allObjects();
+    this.bullets = [];
 }
 
 Game.prototype.addAsteroids = function () {
@@ -28,11 +30,15 @@ Game.prototype.draw = function (ctx) {
     for (let object of this.objects) object.draw(ctx);
 }
 
-Game.prototype.moveObjects = function () {
-    // for (let i = 0; i < this.asteroids.length; i++) {
-    //     this.asteroids[i].move();
-    // }
-    for (let object of this.objects) object.move();
+Game.prototype.moveObjects = function (delta) {
+    for (let i = 0; i < this.objects.length; i++) {
+        let object = this.objects[i];
+        object instanceof Asteroid ? object.move(delta) : object.move();
+        if (this.isOutOfBounds(object.pos)) {
+            if (object instanceof Bullet)
+                this.objects.splice(i, 1);
+        }
+    }
 }
 
 Game.prototype.wrap = function(pos) {
@@ -45,46 +51,40 @@ Game.prototype.wrap = function(pos) {
     return pos;
 }
 
+Game.prototype.isOutOfBounds = function(pos) {
+    return pos[0] < 0 || pos[1] < 0 || pos[0] > Game.DIM_X || pos[1] > Game.DIM_Y;
+}
+
 Game.prototype.step = function() {
     this.moveObjects();
-    let len = this.asteroids.length;
-    let removed = new Set();
-    for (let i = 0; i < len - 1; i++) {
-        for (let j = i + 1; j < len; j++) {
-            if (this.asteroids[i].isCollidedWith(this.asteroids[j])) {
-                removed.add(this.asteroids[i]);
-                removed.add(this.asteroids[j]);
-            }
-        }
-    }
-    removed = Array.from(removed);
-    for (let i = 0; i < removed.length; i++) {
-        this.remove(removed[i]);
-    }
+    this.checkCollisions();
 }
 
 Game.prototype.checkCollisions = function() {
     let len = this.objects.length;
-    let removed = new Set();
-    for (let i = 0; i < len - 1; i++) {
-        for (let j = i + 1; j < len; j++) {
+    for (let i = 0; i < len; i++) {
+        for (let j = 0; j < len; j++) {
             if (this.objects[i].isCollidedWith(this.objects[j])) {
-                removed.add(this.objects[i]);
-                removed.add(this.objects[j]);
+                if (this.objects[j] instanceof Bullet) {
+                    if (i < j) {
+                        this.remove(this.objects[j]);
+                        this.remove(this.objects[i]);
+                    } else {
+                        this.remove(this.objects[i]);
+                        this.remove(this.objects[j]);
+                    }
+                    return;
+                }
             }
         }
     }
-    // removed = Array.from(removed);
-    // for (let i = 0; i < removed.length; i++) {
-    //     this.remove(removed[i]);
-    // }
 }
 
-Game.prototype.remove = function(asteroid) {
-    for (let i = 0; i < this.asteroids.length; i++) {
-        if (this.asteroids[i].pos[0] === asteroid.pos[0] 
-            && this.asteroids[i].pos[1] === asteroid.pos[1])
-            this.asteroids.splice(i, 1);
+Game.prototype.remove = function(obj) {
+    for (let i = 0; i < this.objects.length; i++) {
+        if (this.objects[i].pos[0] === obj.pos[0] 
+            && this.objects[i].pos[1] === obj.pos[1])
+            this.objects.splice(i, 1);
     }
 }
 

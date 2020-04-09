@@ -13,16 +13,15 @@ MovingObject.prototype.draw = function (ctx) {
     ctx.fill();
 }
 
-MovingObject.prototype.move = function () {
-    this.pos[0] += this.vel[0];
-    this.pos[1] += this.vel[1];
-    this.pos = this.game.wrap(this.pos);
+MovingObject.prototype.move = function (delta) {
+    delta = delta || 1;
+    this.pos[0] += this.vel[0] * delta;
+    this.pos[1] += this.vel[1] * delta;
+    if (this.isWrappable) this.pos = this.game.wrap(this.pos);
 }
 
-MovingObject.prototype.isCollidedWith = function (otherObject) {
+MovingObject.prototype.isWrappable = true;
 
-    distance = Math.sqrt((this.pos[0] - otherObject.pos[0]) ** 2 + (this.pos[1] - otherObject.pos[1]) ** 2)
-    return distance < this.radius + otherObject.radius
-}
+MovingObject.prototype.isCollidedWith = function(otherObject) {}
 
 module.exports = MovingObject;

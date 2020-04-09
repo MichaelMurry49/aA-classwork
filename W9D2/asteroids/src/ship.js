@@ -1,5 +1,6 @@
 const Util = require("./utils.js");
 const MovingObject = require("./moving_object.js");
+const Bullet = require("./bullet.js");
 
 Ship.RADIUS = 10;
 Ship.COLOR = "white";
@@ -14,10 +15,21 @@ function Ship(game) {
     };
     MovingObject.call(this, options);
 }
+Util.inherits(Ship, MovingObject);
 
-const relocate = function() {
+Ship.prototype.relocate = function() {
     this.pos = this.game.randomPosition();
 }
-Util.inherits(Ship, MovingObject);
+
+Ship.prototype.power = function(impuse) {
+    this.vel[0] += impuse[0];
+    this.vel[1] += impuse[1];
+}
+
+Ship.prototype.fireBullet = function() {
+    let bullet = new Bullet(this.pos, this.vel, this.game);
+    this.game.bullets.push(bullet)
+    this.game.objects.push(bullet);
+}
 
 module.exports = Ship;
