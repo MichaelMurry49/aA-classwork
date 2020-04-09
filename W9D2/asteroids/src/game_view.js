@@ -3,6 +3,7 @@ const Game = require("./game.js");
 function GameView(ctx) {
     this.game = new Game();
     this.ctx = ctx;
+    this.lastTime = 0;
 }
 
 GameView.prototype.bindKeyHandlers = function() {

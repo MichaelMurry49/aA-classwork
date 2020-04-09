@@ -30,10 +30,10 @@ Game.prototype.draw = function (ctx) {
     for (let object of this.objects) object.draw(ctx);
 }
 
-Game.prototype.moveObjects = function () {
+Game.prototype.moveObjects = function (delta) {
     for (let i = 0; i < this.objects.length; i++) {
         let object = this.objects[i];
-        object.move();
+        object instanceof Asteroid ? object.move(delta) : object.move();
         if (this.isOutOfBounds(object.pos)) {
             if (object instanceof Bullet)
                 this.objects.splice(i, 1);
@@ -79,11 +79,6 @@ Game.prototype.checkCollisions = function() {
         }
     }
 }
-
-// Game.prototype.add = function(obj) {
-//     if (obj instanceof Asteroid) this.asteroids.push(obj);
-//     else if (obj instanceof Bullet) this.bullets.push(obj);
-// }
 
 Game.prototype.remove = function(obj) {
     for (let i = 0; i < this.objects.length; i++) {
