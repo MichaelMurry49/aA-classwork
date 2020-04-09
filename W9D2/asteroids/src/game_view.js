@@ -6,10 +6,12 @@ function GameView(ctx) {
 }
 
 GameView.prototype.bindKeyHandlers = function() {
-    key('w', function () { alert('you pressed w!') });
-    key('a', function () { alert('you pressed a!') });
-    key('s', function () { alert('you pressed s!') });
-    key('d', function () { alert('you pressed d!') });
+    let self = this;
+    key('w', function () { self.game.ship.power([0, -1]) });
+    key('a', function () { self.game.ship.power([-1, 0]) });
+    key('s', function () { self.game.ship.power([0, 1]) });
+    key('d', function () { self.game.ship.power([1, 0]) });
+    key('space', function () { self.game.ship.fireBullet() });
 }
 
 GameView.prototype.start = function () {

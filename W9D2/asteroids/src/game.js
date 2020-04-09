@@ -1,11 +1,13 @@
 const Asteroid = require("./asteroid.js");
 const Ship = require('./ship.js');
+const Bullet = require('./bullet.js');
 
 function Game() {
     this.asteroids = [];
     this.ship = new Ship( this);
     this.addAsteroids();
     this.objects = this.allObjects();
+    this.bullets = [];
 }
 
 Game.prototype.addAsteroids = function () {
@@ -29,7 +31,14 @@ Game.prototype.draw = function (ctx) {
 }
 
 Game.prototype.moveObjects = function () {
-    for (let object of this.objects) object.move();
+    for (let i = 0; i < this.objects.length; i++) {
+        let object = this.objects[i];
+        object.move();
+        if (this.isOutOfBounds(object.pos)) {
+            if (object instanceof Bullet)
+                this.objects.splice(i, 1);
+        }
+    }
 }
 
 Game.prototype.wrap = function(pos) {
@@ -42,6 +51,10 @@ Game.prototype.wrap = function(pos) {
     return pos;
 }
 
+Game.prototype.isOutOfBounds = function(pos) {
+    return pos[0] < 0 || pos[1] < 0 || pos[0] > Game.DIM_X || pos[1] > Game.DIM_Y;
+}
+
 Game.prototype.step = function() {
     this.moveObjects();
     this.checkCollisions();
@@ -52,17 +65,31 @@ Game.prototype.checkCollisions = function() {
     for (let i = 0; i < len; i++) {
         for (let j = 0; j < len; j++) {
             if (this.objects[i].isCollidedWith(this.objects[j])) {
-   
+                if (this.objects[j] instanceof Bullet) {
+                    if (i < j) {
+                        this.remove(this.objects[j]);
+                        this.remove(this.objects[i]);
+                    } else {
+                        this.remove(this.objects[i]);
+                        this.remove(this.objects[j]);
+                    }
+                    return;
+                }
             }
         }
     }
 }
 
-Game.prototype.remove = function(asteroid) {
-    for (let i = 0; i < this.asteroids.length; i++) {
-        if (this.asteroids[i].pos[0] === asteroid.pos[0] 
-            && this.asteroids[i].pos[1] === asteroid.pos[1])
-            this.asteroids.splice(i, 1);
+// Game.prototype.add = function(obj) {
+//     if (obj instanceof Asteroid) this.asteroids.push(obj);
+//     else if (obj instanceof Bullet) this.bullets.push(obj);
+// }
+
+Game.prototype.remove = function(obj) {
+    for (let i = 0; i < this.objects.length; i++) {
+        if (this.objects[i].pos[0] === obj.pos[0] 
+            && this.objects[i].pos[1] === obj.pos[1])
+            this.objects.splice(i, 1);
     }
 }
 
