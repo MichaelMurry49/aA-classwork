@@ -14,10 +14,14 @@ function Ship(game) {
     };
     MovingObject.call(this, options);
 }
+Util.inherits(Ship, MovingObject);
 
-const relocate = function() {
+Ship.prototype.relocate = function() {
     this.pos = this.game.randomPosition();
 }
-Util.inherits(Ship, MovingObject);
+
+Ship.prototype.power = function(impuse) {
+    this.vel += impuse;
+}
 
 module.exports = Ship;

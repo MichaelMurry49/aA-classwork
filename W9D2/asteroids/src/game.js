@@ -29,9 +29,6 @@ Game.prototype.draw = function (ctx) {
 }
 
 Game.prototype.moveObjects = function () {
-    // for (let i = 0; i < this.asteroids.length; i++) {
-    //     this.asteroids[i].move();
-    // }
     for (let object of this.objects) object.move();
 }
 
@@ -47,37 +44,18 @@ Game.prototype.wrap = function(pos) {
 
 Game.prototype.step = function() {
     this.moveObjects();
-    let len = this.asteroids.length;
-    let removed = new Set();
-    for (let i = 0; i < len - 1; i++) {
-        for (let j = i + 1; j < len; j++) {
-            if (this.asteroids[i].isCollidedWith(this.asteroids[j])) {
-                removed.add(this.asteroids[i]);
-                removed.add(this.asteroids[j]);
-            }
-        }
-    }
-    removed = Array.from(removed);
-    for (let i = 0; i < removed.length; i++) {
-        this.remove(removed[i]);
-    }
+    this.checkCollisions();
 }
 
 Game.prototype.checkCollisions = function() {
     let len = this.objects.length;
-    let removed = new Set();
-    for (let i = 0; i < len - 1; i++) {
-        for (let j = i + 1; j < len; j++) {
+    for (let i = 0; i < len; i++) {
+        for (let j = 0; j < len; j++) {
             if (this.objects[i].isCollidedWith(this.objects[j])) {
-                removed.add(this.objects[i]);
-                removed.add(this.objects[j]);
+   
             }
         }
     }
-    // removed = Array.from(removed);
-    // for (let i = 0; i < removed.length; i++) {
-    //     this.remove(removed[i]);
-    // }
 }
 
 Game.prototype.remove = function(asteroid) {

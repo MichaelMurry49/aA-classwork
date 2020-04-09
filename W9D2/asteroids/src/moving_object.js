@@ -19,10 +19,6 @@ MovingObject.prototype.move = function () {
     this.pos = this.game.wrap(this.pos);
 }
 
-MovingObject.prototype.isCollidedWith = function (otherObject) {
-
-    distance = Math.sqrt((this.pos[0] - otherObject.pos[0]) ** 2 + (this.pos[1] - otherObject.pos[1]) ** 2)
-    return distance < this.radius + otherObject.radius
-}
+MovingObject.prototype.isCollidedWith = function(otherObject) {}
 
 module.exports = MovingObject;
